@@ -106,15 +106,26 @@ export function drop(src, target, onSuccess, onError) {
   if (srcNode && srcRangeIncludes(srcNode.srcRange(), target.srcRange())) {
     return;
   }
-  let edits = [];
+
+  let edits = [], {collapsedList} = store.getState(), _onSuccess;
   // Delete the dragged node, unless it came from the toolbar.
+  // Check whether the dragged node was collapsed
   if (srcNode !== null) {
     edits.push(edit_delete(srcNode));
+    if(collapsedList.includes(srcNode.id)) console.log('dragging collapsed node');
+    _onSuccess = ({newAST, focusId}) => {
+      if(onSuccess) onSuccess(newAST, focusId);
+      store.dispatch({type: 'COLLAPSE', id: newAST.getNodeById(focusId).id });
+      store.dispatch({type: 'UNCOLLAPSE', id: srcNode.id });
+    };
+  } else {
+    _onSuccess = onSuccess;
   }
+
   // Insert or replace at the drop location, depending on what we dropped it on.
   edits.push(target.toEdit(content));
   // Perform the edits.
-  performEdits('cmb:drop-node', ast, edits, onSuccess, onError);
+  performEdits('cmb:drop-node', ast, edits, _onSuccess, onError);
 }
 
 // Drag from `src` (which should be a d&d monitor thing) to the trash can, which

@@ -30,6 +30,7 @@ export function commitChanges(
   focusHint = undefined,
   astHint = undefined,
 ) {
+  console.log('focusHint', focusHint);
   let {ast: oldAST, focusId: oldFocusId} = store.getState();
   if (!isUndoOrRedo) {
     // Remember the previous focus. See the next `!isUndoOrRedo` block.
