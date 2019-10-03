@@ -17,7 +17,7 @@ class Primitive extends Component {
     primitive: PropTypes.instanceOf(LanguagePrimitive).isRequired,
     className: PropTypes.string.isRequired,
     onFocus: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     onKeyDown: PropTypes.func.isRequired,
     searchString: PropTypes.string,
   }
@@ -111,7 +111,7 @@ export default class PrimitiveList extends Component {
 
   static propTypes = {
     onFocus: PropTypes.func.isRequired,
-    onBlur: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     onKeyDown: PropTypes.func.isRequired,
     selected: PropTypes.string,
     primitives: PropTypes.array,

@@ -15,4 +15,3 @@ const editor = new CodeMirrorBlocks(container, {collapseAll: false, value: examp
 
 // for debugging purposes
 window.editor = editor
-console.log(editor);
