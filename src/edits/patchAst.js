@@ -1,4 +1,5 @@
 import {assert} from '../utils';
+import uuidv4 from 'uuid/v4';
 
 // defaultdict with empty list
 function addIndex(container, k, v) {
@@ -24,6 +25,7 @@ function copyAllIds(oldTree, newTree) {
 }
 
 export default function unify(oldTree, newTree, drag) {
+  console.log('passed draginfo is ', drag);
   function loop(oldTree, newTree) {
     newTree.id = oldTree.id;
     const index = {};
@@ -65,7 +67,9 @@ export default function unify(oldTree, newTree, drag) {
   // TODO(Emmanuel): could this be moved to the top, with the dragged node stored in 'processed'?
   if(drag) {
     if(newTree.getNodeById(drag.id)) newTree.getNodeById(drag.id).id = uuidv4();
-    copyAllIds(oldTree.getNodeById(drag.id), newTree.getNodeAfterCur(drag.loc));
+    console.log('processing drag changes. old node is ', oldTree.getNodeById(drag.id),
+      'new node is ', newTree.getNodeAfterCur(drag.loc).next);
+    copyAllIds(oldTree.getNodeById(drag.id), newTree.getNodeAfterCur(drag.loc).next);
     newTree.annotateNodes();
   }
   return newTree;

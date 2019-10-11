@@ -481,7 +481,7 @@ class Node extends BlockComponent {
         connectDropTarget, isOver,
         connectDragPreview
       } = this.props;
-      classes.push({'blocks-over-target': isOver, 'blocks-node': true});
+      classes.push({'blocks-over-target': isOver, 'blocks-node': true, 'blocks-dragging': isDragging});
       if(textMarker && textMarker.options.className) classes.push(textMarker.options.className);
       let result = (
         <span
@@ -490,7 +490,6 @@ class Node extends BlockComponent {
           ref           = {el => node.element = el}
           role          = {inToolbar? "listitem" : "treeitem"}
           style={{
-            opacity: isDragging ? 0.5 : 1,
             cssText : textMarker? textMarker.options.css : null,
           }}
           title         = {textMarker? textMarker.options.title : null}

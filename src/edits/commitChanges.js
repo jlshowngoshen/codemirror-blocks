@@ -29,8 +29,9 @@ export function commitChanges(
   isUndoOrRedo = false,
   focusHint = undefined,
   astHint = undefined,
+  dragInfo = undefined,
 ) {
-  console.log('focusHint', focusHint);
+  console.log('dragInfo in commitChanges',dragInfo);
   let {ast: oldAST, focusId: oldFocusId} = store.getState();
   if (!isUndoOrRedo) {
     // Remember the previous focus. See the next `!isUndoOrRedo` block.
@@ -40,7 +41,7 @@ export function commitChanges(
   // If we haven't already parsed the AST during speculateChanges, parse it now.
   let newAST = astHint || SHARED.parser.parse(SHARED.cm.getValue());
   // Patch the tree and set the state
-  newAST = patch(oldAST, newAST);
+  newAST = patch(oldAST, newAST, dragInfo);
   store.dispatch({type: 'SET_AST', ast: newAST});
   // Set the focus.
   let focusId = setFocus(changes, focusHint, newAST);

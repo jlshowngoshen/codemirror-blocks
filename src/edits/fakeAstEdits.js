@@ -81,6 +81,10 @@ export class FakeAstInsertion {
     const newParent = newAST.getNodeById(this.parent.id);
     if (!newParent) return null;
     const indexFromEnd = this.parent[this.spec.fieldName].length - this.index;
+    console.log('parent', this.parent, 
+      'newParent', newParent,
+      'fieldName', this.spec.fieldName,
+      this.parent[this.spec.fieldName].length - this.index);
     const newIndex = newParent[this.spec.fieldName].length - indexFromEnd - 1;
     return newParent[this.spec.fieldName][newIndex];
   }

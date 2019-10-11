@@ -101,6 +101,8 @@ export function drop(src, target, onSuccess, onError) {
   const {ast} = store.getState();
   const srcNode = srcId ? ast.getNodeById(srcId) : null; // null if dragged from toolbar
   const content = srcNode ? srcNode.toString() : srcContent;
+  var dragInfo = null;
+  console.log(target);
   
   // If we dropped the node _inside_ where we dragged it from, do nothing.
   if (srcNode && srcRangeIncludes(srcNode.srcRange(), target.srcRange())) {
@@ -108,16 +110,22 @@ export function drop(src, target, onSuccess, onError) {
   }
 
   let edits = [], {collapsedList} = store.getState(), _onSuccess;
-  // Delete the dragged node, unless it came from the toolbar.
-  // Check whether the dragged node was collapsed
+  // If the node didn't come from the toolbar...
+  // Add a delete edit before the insert edit
   if (srcNode !== null) {
     edits.push(edit_delete(srcNode));
-    if(collapsedList.includes(srcNode.id)) console.log('dragging collapsed node');
+    dragInfo = { id: srcNode.id, loc: target.from };
+
+    /*
     _onSuccess = ({newAST, focusId}) => {
+      if(collapsedList.includes(srcNode.id)) {
+        store.dispatch({type: 'COLLAPSE', id: focusId });
+        store.dispatch({type: 'UNCOLLAPSE', id: srcNode.id });
+      }
       if(onSuccess) onSuccess(newAST, focusId);
-      store.dispatch({type: 'COLLAPSE', id: newAST.getNodeById(focusId).id });
-      store.dispatch({type: 'UNCOLLAPSE', id: srcNode.id });
+      store.dispatch({type: 'SET_FOCUS', id: focusId });
     };
+    */
   } else {
     _onSuccess = onSuccess;
   }
@@ -125,7 +133,7 @@ export function drop(src, target, onSuccess, onError) {
   // Insert or replace at the drop location, depending on what we dropped it on.
   edits.push(target.toEdit(content));
   // Perform the edits.
-  performEdits('cmb:drop-node', ast, edits, _onSuccess, onError);
+  performEdits('cmb:drop-node', ast, edits, _onSuccess, onError, dragInfo);
 }
 
 // Drag from `src` (which should be a d&d monitor thing) to the trash can, which

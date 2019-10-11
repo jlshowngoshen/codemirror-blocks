@@ -51,7 +51,8 @@ export function edit_replace(text, node) {
 // except that this one takes higher-level `Edit` operations, constructed by the
 // functions: `edit_insert`, `edit_delete`, and `edit_replace`. Focus is
 // determined by the focus of the _last_ edit in `edits`.
-export function performEdits(origin, ast, edits, onSuccess=()=>{}, onError=()=>{}) {
+export function performEdits(origin, ast, edits, onSuccess=()=>{}, onError=()=>{}, dragInfo) {
+  console.log('dragInfo in performEdits',dragInfo);
   // Ensure that all of the edits are valid.
   for (const edit of edits) {
     if (!(edit instanceof Edit)) {
@@ -107,7 +108,7 @@ export function performEdits(origin, ast, edits, onSuccess=()=>{}, onError=()=>{
         SHARED.cm.replaceRange(c.text, c.from, c.to, c.origin);
       }
     });
-    let {newAST, focusId} = commitChanges(changeArray, false, focusHint, result.newAST);
+    let {newAST, focusId} = commitChanges(changeArray, false, focusHint, result.newAST, dragInfo);
     onSuccess({newAST, focusId});
   } else {
     onError(result.exception);

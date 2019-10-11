@@ -11,9 +11,7 @@ quuz   ; this is a symbol
 (print "hello world")
 
 ; a child of this expression has a nested comment
-(+ 
-	1  ; this is a nested comment
-	2)
+(+ 1 2)
 
 (* (- 1 2) (+ 9 8))
 
