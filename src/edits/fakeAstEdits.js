@@ -78,15 +78,12 @@ export class FakeAstInsertion {
   // Find the inserted child. If more than one was inserted at once, find the
   // _last_.
   findChild(newAST) {
+    console.log('searching for new parent with', this.parent.id);
     const newParent = newAST.getNodeById(this.parent.id);
     if (!newParent) return null;
     const indexFromEnd = this.parent[this.spec.fieldName].length - this.index;
-    console.log('parent', this.parent, 
-      'newParent', newParent,
-      'fieldName', this.spec.fieldName,
-      this.parent[this.spec.fieldName].length - this.index);
-    const newIndex = newParent[this.spec.fieldName].length - indexFromEnd - 1;
-    return newParent[this.spec.fieldName][newIndex];
+    const newIndex = this.parent[this.spec.fieldName].length - indexFromEnd - 1;
+    return this.parent[this.spec.fieldName][newIndex];
   }
 }
 

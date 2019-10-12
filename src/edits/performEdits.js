@@ -59,7 +59,6 @@ export function performEdits(origin, ast, edits, onSuccess=()=>{}, onError=()=>{
       throw new Error(`performEdits - invalid edit ${edit}: all edits must be instances of Edit.`);
     }
   }
-  console.log(edits.map(e => e.focusHint));
   // Use the focus hint from the last edit provided.
   const lastEdit = edits[edits.length - 1];
   const focusHint = (newAST) => lastEdit.focusHint(newAST);

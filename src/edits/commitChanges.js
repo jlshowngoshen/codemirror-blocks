@@ -31,7 +31,6 @@ export function commitChanges(
   astHint = undefined,
   dragInfo = undefined,
 ) {
-  console.log('dragInfo in commitChanges',dragInfo);
   let {ast: oldAST, focusId: oldFocusId} = store.getState();
   if (!isUndoOrRedo) {
     // Remember the previous focus. See the next `!isUndoOrRedo` block.
@@ -44,11 +43,11 @@ export function commitChanges(
   newAST = patch(oldAST, newAST, dragInfo);
   store.dispatch({type: 'SET_AST', ast: newAST});
   // Set the focus.
-  let focusId = setFocus(changes, focusHint, newAST);
+  let focusId = dragInfo? dragInfo.id : setFocus(changes, focusHint, newAST);
   if (!isUndoOrRedo) {
     // `DO` must be dispatched every time _any_ edit happens on CodeMirror:
     // this is what populates our undo stack.
-    let newFocus = newAST.getNodeById(focusId);
+    let newFocus = newAST.getNodeById(dragInfo? dragInfo.id : focusId);
     let newFocusNId = newFocus ? newFocus.nid : null;
     store.dispatch({type: 'DO', focus: {oldFocusNId, newFocusNId}});
   }

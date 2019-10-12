@@ -4,9 +4,9 @@ import './example-page.less';
 import bigExampleCode from './ast-test.rkt';
 
 
-const smallExampleCode = `(+ 1 2) ;comment\n(+ 3 4)`;
+const smallExampleCode = `(and foo)`;
 
-const useBigCode = true;
+const useBigCode = false;
 const exampleCode = useBigCode ? bigExampleCode : smallExampleCode;
 
 // grab the DOM Node to host the editor, and use it to instantiate
