@@ -80,7 +80,8 @@ export class FakeAstInsertion {
   findChild(newAST) {
     console.log('searching for new parent with', this.parent.id);
     const newParent = newAST.getNodeById(this.parent.id);
-    if (!newParent) return null;
+    // if there is no new parent, or the parent type has changed, return null
+    if (!newParent || (newParent.type !== this.parent.type)) return null;
     const indexFromEnd = this.parent[this.spec.fieldName].length - this.index;
     const newIndex = this.parent[this.spec.fieldName].length - indexFromEnd - 1;
     return this.parent[this.spec.fieldName][newIndex];
